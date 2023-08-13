@@ -27,6 +27,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-inferrable-types': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-empty-function': [
       'warn',
       { allow: ['constructors'] },
