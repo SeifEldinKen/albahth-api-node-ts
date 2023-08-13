@@ -23,8 +23,7 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        singleQuote: true,
-        parser: '@typescript-eslint/parser',
+        endOfLine: 'auto',
       },
     ],
     '@typescript-eslint/no-inferrable-types': 'off',
