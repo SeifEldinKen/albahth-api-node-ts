@@ -1,5 +1,5 @@
 import { ENV } from './dot-env';
 import { HTTP_STATUS_CODE } from './http-status-code';
-import { ERROR_TYPES } from './errors';
+import { ERROR_NAMES } from './error-names';
 
-export { ENV, HTTP_STATUS_CODE, ERROR_TYPES };
+export { ENV, HTTP_STATUS_CODE, ERROR_NAMES };
