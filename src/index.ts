@@ -1,6 +1,6 @@
 import Controller from '../src/controllers/base-controller';
 import Server from '../src/server';
-import envConfig from './config/env.config';
+import envConfig from './config/dot-env';
 
 /* All Controllers */
 const getControllers = (): Controller[] => {

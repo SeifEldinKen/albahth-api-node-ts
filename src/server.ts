@@ -5,6 +5,13 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
+import morgan from 'morgan';
+import dotEnv from './config/dot-env';
+
+import {
+  globalErrorHandlerMiddleware,
+  notFoundErrorMiddleware,
+} from './middlewares';
 
 export default class Server {
   public express: Application;
@@ -36,6 +43,11 @@ export default class Server {
         windowMs: 15 * 60 * 1000, // 15 min
       }),
     );
+
+    if (dotEnv.nodeEnv === 'development') {
+      this.express.use(morgan('dev'));
+      console.log(`mode: ${dotEnv.nodeEnv}`);
+    }
 
     this.express.use(
       compression({
@@ -74,7 +86,10 @@ export default class Server {
     );
   };
 
-  private initializeErrorHandling = (): void => {};
+  private initializeErrorHandling = (): void => {
+    this.express.use('*', notFoundErrorMiddleware);
+    this.express.use(globalErrorHandlerMiddleware);
+  };
 
   private initializeDatabaseConnection = (): void => {};
 
