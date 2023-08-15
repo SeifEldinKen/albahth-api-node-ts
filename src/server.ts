@@ -6,12 +6,13 @@ import helmet from 'helmet';
 import cors from 'cors';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import dotEnv from './config/dot-env';
+import { ENV } from '../src/config';
 
 import {
   globalErrorHandlerMiddleware,
   notFoundErrorMiddleware,
 } from './middlewares';
+import DB from './database/db';
 
 export default class Server {
   public express: Application;
@@ -44,9 +45,9 @@ export default class Server {
       }),
     );
 
-    if (dotEnv.nodeEnv === 'development') {
+    if (ENV.nodeEnv === 'development') {
       this.express.use(morgan('dev'));
-      console.log(`mode: ${dotEnv.nodeEnv}`);
+      console.log(`mode: ${ENV.nodeEnv}`);
     }
 
     this.express.use(
@@ -91,7 +92,9 @@ export default class Server {
     this.express.use(globalErrorHandlerMiddleware);
   };
 
-  private initializeDatabaseConnection = (): void => {};
+  private initializeDatabaseConnection = async (): Promise<void> => {
+    DB.connection();
+  };
 
   public listen = (): void => {
     this.express.listen(this.port, () => {

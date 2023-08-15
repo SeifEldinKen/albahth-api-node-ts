@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { BadRequestError, BaseError, UnauthorizedError } from '../errors';
-import dotEnv from '../config/dot-env';
+import { ENV } from '../config';
 
 // -->> catch all errors and format and report to logger
 const globalErrorHandlerMiddleware: ErrorRequestHandler = (
@@ -32,7 +32,7 @@ const globalErrorHandlerMiddleware: ErrorRequestHandler = (
     error: {
       message: error.message,
       isOperational: error.isOperational,
-      stack: dotEnv.nodeEnv === 'development' ? error.stack : undefined,
+      stack: ENV.nodeEnv === 'development' ? error.stack : undefined,
     },
   });
 };

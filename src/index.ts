@@ -1,6 +1,6 @@
 import Controller from '../src/controllers/base-controller';
 import Server from '../src/server';
-import envConfig from './config/dot-env';
+import { ENV } from './config';
 
 /* All Controllers */
 const getControllers = (): Controller[] => {
@@ -9,7 +9,7 @@ const getControllers = (): Controller[] => {
 
 (async () => {
   // -->> 1) create server
-  const server: Server = new Server(getControllers(), envConfig.port);
+  const server: Server = new Server(getControllers(), ENV.port);
 
   // -->> 2) start server
   server.listen();
