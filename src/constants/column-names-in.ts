@@ -1,0 +1,21 @@
+export const COLUMN_NAMES_IN = Object.freeze({
+  userTable: Object.freeze({
+    id: 'id',
+    email: 'email',
+    emailVerified: 'emailVerified',
+    name: 'name',
+    phoneNumber: 'phoneNumber',
+    phoneNumberVerified: 'phoneNumberVerified',
+    passwordHash: 'passwordHash',
+    passwordChangedAt: 'passwordChangedAt',
+    passwordRestCodeHash: 'passwordRestCodeHash',
+    passwordResetCodeExpired: 'passwordResetCodeExpired',
+    passwordResetCodeVerified: 'passwordResetCodeVerified',
+    gender: 'gender',
+    imageProfilePath: 'imageProfilePath',
+    role: 'role',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+  }),
+});
