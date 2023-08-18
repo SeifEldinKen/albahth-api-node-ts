@@ -7,12 +7,14 @@ import cors from 'cors';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import { ENV } from '../src/config';
+import { UUID_EXTENSION, USER_TABLE } from './database';
 
 import {
   globalErrorHandlerMiddleware,
   notFoundErrorMiddleware,
 } from './middlewares';
 import DB from './database/db';
+import { QueryTypes } from 'sequelize';
 
 export default class Server {
   public express: Application;
@@ -93,7 +95,9 @@ export default class Server {
   };
 
   private initializeDatabaseConnection = async (): Promise<void> => {
-    DB.connection();
+    (await DB.init())
+      ? console.log('database initialized')
+      : console.log('database not initialized');
   };
 
   public listen = (): void => {

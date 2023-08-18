@@ -1,33 +1,61 @@
-import { Sequelize } from 'sequelize';
+import { QueryTypes, Sequelize } from 'sequelize';
+import { UUID_EXTENSION, USER_TABLE } from '../database';
 import { ENV } from '../config';
 
 export default class DB {
-  static connection = async (): Promise<Sequelize | null> => {
+  static connection = async () => {
     let sequelize: Sequelize | null = null;
 
     try {
-      sequelize = new Sequelize(
-        ENV.SEQUELIZE.DATABASE!,
-        ENV.SEQUELIZE.USERNAME!,
-        ENV.SEQUELIZE.PASSWORD,
-        {
-          host: ENV.SEQUELIZE.HOST,
-          dialect: ENV.SEQUELIZE.DIALECT,
-        },
-      );
+      const { DATABASE, USERNAME, PASSWORD, HOST, DIALECT } = ENV.SEQUELIZE;
+
+      sequelize = new Sequelize(DATABASE!, USERNAME!, PASSWORD, {
+        host: HOST,
+        dialect: DIALECT,
+        logging: false,
+      });
 
       await sequelize.authenticate();
 
       console.log('Connected database');
-
-      return sequelize;
     } catch (error) {
-      console.log(`Connection Error: ${error}`);
-      return null;
+      sequelize = null;
+      throw new Error(
+        `Error connection to database: ${(error as Error).message}`,
+      );
     }
+
+    return sequelize;
   };
 
   static close = async (sequelize: Sequelize | null) => {
     await sequelize?.close();
+  };
+
+  static init = async () => {
+    let sequelize: Sequelize | null = null;
+
+    try {
+      sequelize = await this.connection();
+
+      const tables = [UUID_EXTENSION, USER_TABLE];
+
+      if (!sequelize) {
+        throw Error;
+      }
+
+      await tables.forEach(async (table) => {
+        await sequelize?.query(table, {
+          logging: false,
+          type: QueryTypes.INSERT,
+        });
+      });
+    } catch (error) {
+      return false;
+    } finally {
+      await this.close(sequelize);
+    }
+
+    return true;
   };
 }
